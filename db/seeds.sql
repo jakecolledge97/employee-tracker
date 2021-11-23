@@ -1,3 +1,6 @@
+-- selects database
+USE company_db;
+
 -- adds data to tables
 INSERT INTO department (id, name)
 VALUES (1, "Salon"),
