@@ -4,6 +4,7 @@ const mysql = require('mysql2');
 require('dotenv').config();
 const inquirer = require('inquirer');
 const cTable = require('console.table')
+const query = require('./lib/queries')
 
 //select port to listen on
 const PORT = process.env.PORT || 3001;
@@ -22,7 +23,10 @@ const db = mysql.createConnection(
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME
     },
-    console.log(`Connected to the company_db database.`)
+    (err) => {
+        console.log(err)
+    }
+    //console.log(`Connected to the company_db database.`)
 );
 
 const choices = ["View all departments.", "View all roles.", "View all employees", "Add a department", "Add a role", "Add an employee", "Update an employee role"]
@@ -45,7 +49,6 @@ async function init () {
             console.table('\n','Departments', results, '\n')
             init();
         });
-        
     }
     //Shows Roles table
     if(answer.action === choices[1]){
@@ -57,6 +60,7 @@ async function init () {
     //Shows Employees table
     if(answer.action === choices[2]){
         db.query(`SELECT id, first_name AS 'First Name', last_name AS 'Last Name', role_id AS 'Role Id' FROM company_db.employee;`, function (err, results){
+            console.log(results)
             console.table('\n','Employees', results, '\n')
             init();
         });
@@ -76,9 +80,25 @@ async function init () {
             db.query('SELECT * FROM company_db.department;', function (err, results){
                 console.table('\n','Updated Departments', results, '\n')
                 init();
-            });
+            });                 
         })
     }
+
+    // if(answer.action === choices[4]){
+    //     const answer = await inquirer.prompt([
+    //         {
+    //             type: 'input',
+    //             message: 'What is the roles name?',
+    //             name: 'role'
+    //         },
+    //         {
+    //             type: 'list',
+    //             message: 'What department is this role apart of?',
+    //             choices: '',
+    //             name: 'departmentList'
+    //         }
+    //     ])
+    // }
 }
 
 init()
