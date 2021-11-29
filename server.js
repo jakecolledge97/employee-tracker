@@ -74,7 +74,6 @@ async function init () {
     if(answer.action === choices[4]){
         db.query('SELECT name FROM company_db.department;', async function(err, results){
             const departmentNames = results
-            console.log(departmentNames)
             //asks roles name and which department it belongs too
             const answer = await inquirer.prompt([
                 {
@@ -99,8 +98,7 @@ async function init () {
                 const id = results
                 const title = answer.role
                 const salary = answer.salary
-                console.log(id[0].id)
-                console.log(salary)
+                
                 db.query(`INSERT INTO role(title, salary, department_id) VALUES('${title}',${salary},${await id[0].id});`, function (err, results){
                     if(err){
                         console.log(err)
@@ -157,7 +155,6 @@ async function init () {
                 //gets the id from role using user selection
                 db.query(`SELECT id FROM company_db.role WHERE title="${answer.roleList}";`, async function (err, results){
                     const employeeId = await results[0].id;
-                    console.log(managerId)
                     if(err){
                         console.log(err)
                     }else{
@@ -192,6 +189,51 @@ async function init () {
                 })
             })
         }) 
+    }
+    if(answer.action === choices[6] ){
+        db.query('SELECT first_name, last_name FROM company_db.employee;', async function (err, results){
+            const employeeObject = results
+            const employeeArr = []
+            for(let i = 0; i < results.length; i++){
+                employeeArr.push(`${await results[i].first_name} ${await results[i].last_name}`)
+            }
+
+            db.query('SELECT title AS name FROM company_db.role;', async function (err, results){
+                console.log(results)
+                const role = results
+
+                const answer = await inquirer.prompt([
+                    {
+                        type: 'list',
+                        message: 'Which Employees role needs to be updates?',
+                        choices: employeeArr,
+                        name: 'employee'
+                    },
+                    {
+                        type: 'list',
+                        message: 'What is their new role?',
+                        choices: role,
+                        name: 'role'
+                    }
+                ])
+                db.query(`SELECT id FROM company_db.role WHERE title='${answer.role}';`, async function (err, results){
+                    
+                    const roleId = results[0].id
+
+                    for(let i = 0; i < employeeArr.length; i++){
+                        if(answer.employee === employeeArr[i]){
+                            db.query(`UPDATE company_db.employee SET role_id=${await roleId} WHERE first_name='${employeeObject[i].first_name}' AND last_name='${employeeObject[i].last_name}';`, function (err, restult){
+                                db.query('SELECT * FROM company_db.employee;', function (err, results){
+                                    console.table('\n','Updated Employees', results, '\n')
+                                    init();
+                                })
+                            })
+                        }
+                    }
+                })
+
+            })
+        })
     }
 }
 
