@@ -47,8 +47,9 @@ async function init () {
     }
     //Shows Employees table
     if(answer.action === choices[2]){
-        db.query(`SELECT id, first_name AS 'First Name', last_name AS 'Last Name', role_id AS 'Role Id', manager_id AS 'Manager Id' FROM company_db.employee;`, function (err, results){
-            console.table('\n','Employees', results, '\n')
+        db.query(`SELECT first_name AS 'First Name', last_name AS 'Last Name', role_id AS 'Role Id', manager_id AS 'Manager Id', title AS 'Role', name AS 'Department' FROM company_db.employee e JOIN company_db.role r ON e.role_id = r.id JOIN company_db.department d ON e.role_id = d.id;`, async function (err, results){
+            const employeeTable = results
+            console.table('\n','Employees', employeeTable, '\n')
             init();
         });
     }

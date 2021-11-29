@@ -30,7 +30,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/jakecolledge97/employee-tracker">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://cdn-icons-png.flaticon.com/512/2405/2405283.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Employee Tracker</h3>
@@ -41,7 +41,7 @@
     <a href="https://github.com/jakecolledge97/employee-tracker"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/jakecolledge97/employee-tracker">View Demo</a>
+    <a href="https://drive.google.com/file/d/1mjq0zlUURa-Jm-u6EhB4Lw209xK0mpTc/view">View Demo</a>
     ·
     <a href="https://github.com/jakecolledge97/employee-tracker/issues">Report Bug</a>
     ·
@@ -79,7 +79,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+Employee Tracker
 
 This project is a command line editor that works with a live database on your local machine using MYSQL. It creates a company database, which contains an Employee list, a Employee Roles list, and a Department list, that all work together to create an easy to read database. This was an assignment given to me by Adelaide Uni's Coding Bootcamp, it taught me how to use MYSQL and how to work with databases through a command line input.
 
@@ -132,7 +132,13 @@ This is an example of how to list things you need to use the software and how to
 
    source ./db/seeds.sql;
    ```
-4. Run the server
+4. You will need to update the .env file by removing .EXAMPLE from the file name and adding your login credentials
+   ```sh
+    DB_NAME=company_db
+    DB_USER=<YOUR MySQL USERNAME>
+    DB_PASSWORD=<YOUR MySQL PASSWORD>
+   ``` 
+5. Run the server
    ```sh
    node server.js
    ```
