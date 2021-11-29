@@ -40,7 +40,7 @@ async function init () {
     }
     //Shows Roles table
     if(answer.action === choices[1]){
-        db.query(`SELECT  id, title, (salary*38)*52 AS 'Salary', department_id AS 'Department Id' FROM company_db.role;`, function (err, results){
+        db.query(`SELECT title, (salary*38)*52 AS 'Salary p/Year', department_id AS 'Department Id', name AS 'Department Name' FROM company_db.role r JOIN company_db.department d ON r.department_id = d.id;`, function (err, results){
             console.table('\n','Roles', results, '\n')
             init();
         });
